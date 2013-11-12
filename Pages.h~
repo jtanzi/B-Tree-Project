@@ -1,0 +1,16 @@
+/*
+Page class
+*/
+
+class Page
+{
+	private:
+		
+		char[4] pid;  //Page ID
+		char[100] bitmap; //Page bitmap; stored in last 100 bytes of Page
+
+	public:
+
+		Page(
+
+}
