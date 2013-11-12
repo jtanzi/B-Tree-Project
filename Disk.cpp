@@ -22,7 +22,7 @@ request_page function
 Arguments: pid (Page ID of the page to request)
 Returns a Page with the ID requested
 */
-Page Disk::request_page(char* pid)
+Page Disk::request_page(int pid)
 {
 	Page new_Page = Page(pid);
 	update_occupied(pid);
@@ -31,12 +31,16 @@ Page Disk::request_page(char* pid)
 }
 
 
-
-void Disk::update_occupied(char* pid)
+void Disk::update_occupied(int pid)
 {
 	occupied.push(pid);
 	free.pop();
-}		
+}	
+
+std::queue<int> Disk::get_occupied()
+{
+	return occupied;
+}	
 		
 
 

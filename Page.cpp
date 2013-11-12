@@ -13,17 +13,17 @@ Constructor for Page instance
 Arguments: pid (Page ID for Page to create)
 Returns: Page with the Page ID requested
 */
-Page::Page(char* pid)
+Page::Page(int pid)
 {
-	pid = pid;
+	Page::pid = pid;
 }
 
-char* Page::getpid()
+int Page::getpid()
 {
 	return pid;
 }
 
-char* Page::getbitmap()
+int* Page::getbitmap()
 {
 	return bitmap;
 }

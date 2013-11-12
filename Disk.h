@@ -12,18 +12,19 @@ class Disk
 
 {
 	private:
-
-		char diskspace[1000000];
 		
 		//Queues for keeping track of occupied and free pages
-		std::queue <char*> occupied;
-		std::queue <char*> free;
+		std::queue <int> occupied;
+		std::queue <int> free;
 
 	public:
 		
+		int diskspace[1000000];
+
 		//Page management functions
-		Page request_page(char* pid);
-		void update_occupied(char* pid);
+		Page request_page(int pid);
+		void update_occupied(int pid);
+		std::queue<int> get_occupied();
 		
 		
 

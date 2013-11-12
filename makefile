@@ -12,3 +12,4 @@ Page.o: Page.cpp
 
 clean:
 	rm -f main Disk Page *.o *.~
+	find ./ -name '*~' | xargs rm

@@ -12,14 +12,14 @@ class Page
 {
 	private:
 		
-		char* pid;  //Page ID
-		char bitmap[100]; //Page bitmap; stored in last 100 bytes of Page
+		int pid;  //Page ID
+		int bitmap[100]; //Page bitmap; stored in last 100 bytes of Page
 
 	public:
 
-		Page(char* pid);
-		char* getpid();
-		char* getbitmap();
+		Page(int pid);
+		int getpid();
+		int* getbitmap();
 
 };
 
