@@ -12,13 +12,13 @@ int main()
 	int pid = 1;
 	Page new_page = disk.request_page(pid);
 	cout << "new_page.pid: " << new_page.getpid() << endl;
-	disk.diskspace[new_page.getpid() * 500] = 1;
+	disk.disk_write(new_page.getpid() * 500, new_page.getpid() * 500 + 3, 1, 4);
 	cout << "disk addr: " << new_page.getpid() * 500 << endl;
 	
 	cout << "[";
 	for (int i = 490; i < 510; i++)
 	{
-		cout << disk.diskspace[i] << " ";
+		cout << disk.diskspace[i];
 	}
 	cout << "]" << endl;
 	

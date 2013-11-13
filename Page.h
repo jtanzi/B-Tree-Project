@@ -8,6 +8,7 @@ does not store any records
 #ifndef PAGE_H
 #define PAGE_H
 
+
 class Page
 {
 	private:

@@ -18,8 +18,11 @@ class Disk
 		std::queue <int> free;
 
 	public:
-		
-		int diskspace[1000000];
+		Disk();
+		string diskspace[1000000];
+
+		void disk_write(int start, int end, int value, int length);
+		string pad_value(int value, int length);
 
 		//Page management functions
 		Page request_page(int pid);
