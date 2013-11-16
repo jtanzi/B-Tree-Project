@@ -1,15 +1,12 @@
-btree: main.o Disk.o Page.o
-	g++ -g -o btree main.o Disk.o Page.o
+hw5: main.o Tree.o
+	g++ -g -o hw5 main.o Tree.o 
 
 main.o: main.cpp 
 	g++ -g -c main.cpp 
 
-Disk.o: Disk.cpp
-	g++ -g -c Disk.cpp
-
-Page.o: Page.cpp
-	g++ -g -c Page.cpp
+Tree.o: Tree.cpp
+	g++ -g -c Tree.cpp
 
 clean:
-	rm -f main Disk Page *.o *.~
+	rm -f main Tree *.o *.~
 	find ./ -name '*~' | xargs rm
