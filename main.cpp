@@ -2,6 +2,7 @@
 #include <sstream>
 #include <cstdlib>
 #include "Tree.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -51,13 +52,31 @@ int main()
 {
 
 	string memspace[2000][500];
-	for (int i = 0; i < 2000; i++)
-	{
-		string pid = pad_value(i, 4);
-		memspace[i][0] = pid;
-	}
+	Tree tree = Tree();
+	Node nodeA = Node();
+	nodeA.set_n_type(0);
 
-	cout << memspace[50][0] << endl;
+	/*
+	Node node1 = Node();
+	cout << "node1: " << node1.get_tp(0) << " " << node1.get_tp(1) << " "
+		<< node1.get_tp(2) << " "  << node1.get_SSN(1) << " "
+		<< node1.get_SSN(2) << " " << node1.get_SSN(3) << endl
+		<< node1.get_rid(1) << " " << node1.get_rid(2) << " "
+		<< node1.get_rid(3) << endl << node1.get_sib_p() << endl;
+
+	string str = pad_value(5, 4);
+	int tp_num = unpad_value(str);
+	node1.set_tp(1, tp_num);
+	node1.set_SSN(1, "100");
+	node1.set_rid(2, 50);
+	node1.set_sib_p(3);
+
+	cout << "node1: " << node1.get_tp(0) << " " << node1.get_tp(1) << " "
+		<< node1.get_tp(2) << " "  << node1.get_SSN(1) << " "
+		<< node1.get_SSN(2) << " " << node1.get_SSN(3) << endl
+		<< node1.get_rid(1) << " " << node1.get_rid(2) << " "
+		<< node1.get_rid(3) << endl << node1.get_sib_p() << endl;
+	*/
 
 
 } //end main

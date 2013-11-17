@@ -21,7 +21,7 @@ class Tree
 
 		//Getters and Setters
 		int get_root();
-		void set_root();	
+		void set_root(int pid);	
 
 
 };
