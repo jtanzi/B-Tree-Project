@@ -9,42 +9,6 @@ using namespace std;
 
 //Function Declaration
 
-/*
-Function Name: pad_value
-Description: Takes a integer value and returns a string of a given
-	length padded with 0's where needed in front
-Arguments: value, the integer value to convert; length, the length of the
-	final string
-*/
-string pad_value(int value, int length)
-{
-	//Convert value to a string
-	ostringstream intstring;
-	intstring << value;
-	string initial_str = intstring.str();
-
-	//Pad string with the appropriate number of zeros in front
-	string padded_str;
-	for (int i = 0; i < (length - initial_str.length()); i++)
-	{
-		padded_str.append("0");
-	}
-	padded_str.append(initial_str);
-
-	return padded_str;
-}
-
-/*
-Function Name: unpad_value
-Description: Takes a string and returns an integer representation of it
-Arguments: value, the string to convert
-*/
-int unpad_value(string value)
-{
-	int int_value;
-	istringstream (value) >> int_value;
-	return int_value;
-}
 
 
 //Main Program
@@ -54,7 +18,41 @@ int main()
 	string memspace[2000][500];
 	Tree tree = Tree();
 	Node nodeA = Node();
-	nodeA.set_n_type(0);
+	Node nodeB = Node();
+	Node nodeC = Node();
+	nodeA.set_tp(0, 1);
+	nodeA.set_SSN(1, 10);
+	nodeA.set_tp(1, 2);
+	nodeB.set_n_type(1);
+	nodeB.set_SSN(1, 3);
+	nodeB.set_rid(1, 1);
+	nodeB.set_SSN(2, 5);
+	nodeB.set_rid(2, 2);
+	nodeB.set_sib_p(2);
+	nodeC.set_n_type(1);
+	nodeC.set_SSN(1, 25);
+	nodeC.set_rid(1, 3);
+	nodeC.set_SSN(2, 36);
+	nodeC.set_rid(2, 4);
+	
+	nodeA.write_to_page(0, memspace);
+	nodeB.write_to_page(1, memspace);
+	nodeC.write_to_page(2, memspace);
+
+	cout << "nodeA: " << nodeA;
+	cout << "nodeB: " << nodeB;
+	cout << "nodeC: " << nodeC;
+	cout << "------------------" << endl;
+
+	nodeA.load_from_page(0, memspace);
+	nodeB.load_from_page(1, memspace);
+	nodeC.load_from_page(2, memspace);
+
+	cout << "nodeA: " << nodeA;
+	cout << "nodeB: " << nodeB;
+	cout << "nodeC: " << nodeC;
+
+	cout << "Search test:" << tree.search(25, memspace) << endl;
 
 	/*
 	Node node1 = Node();

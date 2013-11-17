@@ -23,6 +23,9 @@ class Tree
 		int get_root();
 		void set_root(int pid);	
 
+		//Tree operations
+		int search(int k, string memspace[2000][500]);
+		int tree_search(int k, int root_pid, string memspace[2000][500]);
 
 };
 

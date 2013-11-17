@@ -4,6 +4,7 @@ Tree class functions definitions file
 
 #include <iostream>
 #include "Tree.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -26,3 +27,50 @@ void Tree::set_root(int pid)
 {
 	root_pid = pid;
 }
+
+int Tree::search(int k, string memspace[2000][500])
+{
+	return tree_search(k, root_pid, memspace);
+}
+
+int Tree::tree_search(int k, int pid, string memspace[2000][500])
+{
+	Node current_node = Node();
+	current_node.load_from_page(pid, memspace);
+
+	if (current_node.get_n_type() == 1)  //node is a leaf
+	{
+		if (current_node.get_SSN(1) == k)
+		{
+			return current_node.get_rid(1);
+		}
+		else if (current_node.get_SSN(2) == k)
+		{
+			return current_node.get_rid(2);
+		}
+		else if (current_node.get_SSN(3) == k)
+		{
+			return current_node.get_rid(3);
+		}
+		else
+			return -1;
+	}
+	else  //node is internal
+	{
+		int k0 = current_node.get_SSN(1);
+		int k1 = current_node.get_SSN(2);
+		
+		if (k < k0)
+		{
+			return tree_search(k, current_node.get_tp(0), memspace);
+		}
+		else if (k0 >= k && k < k1)
+		{
+			return tree_search(k, current_node.get_tp(1), memspace);
+		}
+		else
+		{
+			return tree_search(k, current_node.get_tp(2), memspace);
+		}
+	}
+} //end tree_search
