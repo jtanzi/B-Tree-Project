@@ -12,4 +12,3 @@ Node.o: Node.cpp
 
 clean:
 	rm -f main Tree Node *.o *.~
-	find ./ -name '*~' | xargs rm

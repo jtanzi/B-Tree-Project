@@ -52,29 +52,11 @@ int main()
 	cout << "nodeB: " << nodeB;
 	cout << "nodeC: " << nodeC;
 
-	cout << "Search test:" << tree.search(25, memspace) << endl;
+	cout << "Search test:" << tree.search(25, memspace) << endl
+		<< tree.search(36, memspace) << endl
+		<< tree.search(300, memspace) << endl;
 
-	/*
-	Node node1 = Node();
-	cout << "node1: " << node1.get_tp(0) << " " << node1.get_tp(1) << " "
-		<< node1.get_tp(2) << " "  << node1.get_SSN(1) << " "
-		<< node1.get_SSN(2) << " " << node1.get_SSN(3) << endl
-		<< node1.get_rid(1) << " " << node1.get_rid(2) << " "
-		<< node1.get_rid(3) << endl << node1.get_sib_p() << endl;
 
-	string str = pad_value(5, 4);
-	int tp_num = unpad_value(str);
-	node1.set_tp(1, tp_num);
-	node1.set_SSN(1, "100");
-	node1.set_rid(2, 50);
-	node1.set_sib_p(3);
-
-	cout << "node1: " << node1.get_tp(0) << " " << node1.get_tp(1) << " "
-		<< node1.get_tp(2) << " "  << node1.get_SSN(1) << " "
-		<< node1.get_SSN(2) << " " << node1.get_SSN(3) << endl
-		<< node1.get_rid(1) << " " << node1.get_rid(2) << " "
-		<< node1.get_rid(3) << endl << node1.get_sib_p() << endl;
-	*/
 
 
 } //end main
