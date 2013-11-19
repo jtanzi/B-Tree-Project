@@ -16,12 +16,15 @@ class Node
 		int SSN1, SSN2, SSN3;  //Keys
 		int rid1, rid2, rid3;  //Record IDs
 		int sib_p;  //Sibling pointer
+		int addr;  //Page ID of node (address)
 	
 
 	public:
 
 		//Constructor
 		Node();
+		
+		void clear();
 
 		//Page Management
 		void load_from_page(int pid, string memspace[2000][500]);
@@ -35,6 +38,7 @@ class Node
 		int get_SSN(int ssn_num);
 		int get_rid(int rid_num);
 		int get_sib_p();
+		int get_addr();
 		
 		void set_n_type(int value);
 		void set_tp(int tp_num, int value);

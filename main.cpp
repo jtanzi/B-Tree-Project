@@ -39,6 +39,12 @@ int main()
 	nodeB.write_to_page(1, memspace);
 	nodeC.write_to_page(2, memspace);
 
+	for (int i = 0; i < 3; i++)
+	{
+		tree.used.push(i);
+		tree.free.pop();	
+	}
+
 	cout << "nodeA: " << nodeA;
 	cout << "nodeB: " << nodeB;
 	cout << "nodeC: " << nodeC;
@@ -52,9 +58,12 @@ int main()
 	cout << "nodeB: " << nodeB;
 	cout << "nodeC: " << nodeC;
 
-	cout << "Search test:" << tree.search(25, memspace) << endl
-		<< tree.search(36, memspace) << endl
+	cout << "Search test:" << tree.search(3, memspace) << endl
+		<< tree.search(5, memspace) << endl
 		<< tree.search(300, memspace) << endl;
+
+	cout <<"Start Insert Test\n";
+	tree.insert_record(20, 250, memspace);
 
 
 

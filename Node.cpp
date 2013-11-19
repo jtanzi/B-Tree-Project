@@ -13,6 +13,27 @@ using namespace std;
 Node constructor
 */
 Node::Node()
+{	
+	tp0 = 9999;
+	tp1 = 9999;
+	tp2 = 9999;
+	int n_type = 0;
+	SSN1 = 999999999;
+	SSN2 = 999999999;
+	SSN3 = 999999999;
+	rid1 = 999999;
+	rid2 = 999999;
+	rid3 = 999999;
+	sib_p = 9999;
+}
+
+/*
+Function Name: clear
+Description: Clears node values (resets to original new state)
+Arguments: None
+Returns: None
+*/
+void Node::clear()
 {
 	tp0 = 9999;
 	tp1 = 9999;
@@ -42,6 +63,10 @@ void Node::load_from_page(int pid, string memspace[2000][500])
 	if (pid == 9999)  //Check for null pointer and exit early if found
 	{
 		return;
+	}
+	else 
+	{
+		addr = pid;
 	}
 
 	for (int i = 0; i < 8; i++)
@@ -232,6 +257,17 @@ Returns:
 int Node::get_sib_p()
 {
 	return sib_p;
+}
+
+/*
+Function Name: 
+Description: 
+Arguments: 
+Returns: 
+*/
+int Node::get_addr()
+{
+	return addr;
 }
 
 //Setters
