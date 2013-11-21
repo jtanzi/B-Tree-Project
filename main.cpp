@@ -60,7 +60,8 @@ int main()
 
 	cout << "Search test:" << tree.search(3, memspace) << endl
 		<< tree.search(5, memspace) << endl
-		<< tree.search(300, memspace) << endl;
+		<< tree.search(300, memspace) << endl
+		<< tree.search(20, memspace) << endl;
 
 	cout <<"Start Insert Test\n";
 	tree.insert_record(20, 250, memspace);

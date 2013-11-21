@@ -4,6 +4,7 @@ Tree class header file
 
 #include <iostream>
 #include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -13,7 +14,9 @@ class Tree
 	private:
 		
 		//root node pointer
-		int root_pid;		
+		int root_pid;
+		stack<int> parents;
+		int n_pid;
 
 	public:
 

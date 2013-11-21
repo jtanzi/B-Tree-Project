@@ -5,10 +5,13 @@ Tree class functions definitions file
 #include <iostream>
 #include <stack>
 #include <queue>
+#include <algorithm>
+#include <vector>
 #include "Tree.h"
 #include "Node.h"
 
 using namespace std;
+
 
 //Construction
 /*
@@ -73,28 +76,27 @@ int Tree::tree_search(int k, int pid, string memspace[2000][500])
 {
 	Node current_node = Node();
 	current_node.load_from_page(pid, memspace);
-	//cout << "F1\n";
 
 	if (current_node.get_n_type() == 1)  //node is a leaf
 	{
 		if (current_node.get_SSN(1) == k)
 		{
-			//cout << "F6\n";
+			n_pid = pid;
 			return current_node.get_rid(1);
 		}
 		else if (current_node.get_SSN(2) == k)
 		{
-			//cout << "F7\n";
+			n_pid = pid;
 			return current_node.get_rid(2);
 		}
 		else if (current_node.get_SSN(3) == k)
 		{
-			//cout << "F8\n";
+			n_pid = pid;
 			return current_node.get_rid(3);
 		}
 		else
 		{
-			//cout << "F9\n";
+			n_pid = pid;
 			return -1;
 		}
 	}
@@ -102,26 +104,23 @@ int Tree::tree_search(int k, int pid, string memspace[2000][500])
 	{
 		int k0 = current_node.get_SSN(1);
 		int k1 = current_node.get_SSN(2);
+		parents.push(pid);
 		
-		//cout << "F2\n";
-
 		if (k < k0)
 		{
-			//cout << "F3\n";
 			return tree_search(k, current_node.get_tp(0), memspace);
 		}
 		else if (k0 <= k && k < k1)
 		{
-			//cout << "F4\n";
 			return tree_search(k, current_node.get_tp(1), memspace);
 		}
 		else
 		{
-			//cout << "F5\n";
 			return tree_search(k, current_node.get_tp(2), memspace);
 		}
 	}
 } //end tree_search
+
 
 /*
 Function Name: insert_record
@@ -133,8 +132,12 @@ Returns: None
 */
 void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 {
-	stack<int> parents; /*Keeps track of parent node page IDs for 
-					  recursive calls*/
+	
+	//stack<int> parents; /*Keeps track of parent node page IDs for 
+					  //recursive calls*/
+
+	/*
+
 	Node current_node = Node();
 
 	//Check for empty memory, write first record to first page if so
@@ -177,14 +180,78 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 			current_node.clear();
 			current_node.load_from_page(node_addr, memspace);
 		}
-		else if (k > current_node.get_SSN(2))
+		else if (k > current_node.get_SSN(1) 
+				&& current_node.get_SSN(2) != 9999)
 		{
 			node_addr = current_node.get_tp(1);
 			current_node.clear();
 			current_node.load_from_page(node_addr, memspace);
 		}
+		else if (k > current_node.get_SSN(2))
+		{
+			node_addr = current_node.get_tp(2);
+			current_node.clear();
+			current_node.load_from_page(node_addr, memspace);
+		}
 
 	} //end while
+	
+	*/
+
+	Node n = Node();
+	cout << "From in insert: " << k << endl;
+	int result = search(k, memspace);
+	cout << "Insert: " << result << endl;
+
+	if (result == record_id)
+	{
+		return;
+	}
+	
+	if (result == -1)
+	{
+		cout << "Insert result: " << n_pid << " " << result << " " 
+			<< parents.top() << endl;
+
+		n.load_from_page(n_pid, memspace);
+
+		//Check if any SSN slots are free
+		int full_slot_count = 0;
+
+		for (int i = 1; i <= 3; i++)
+		{
+			if (n.get_SSN(i) != 999999999)
+			{
+				full_slot_count = full_slot_count + 1;
+			}
+		}
+	
+		cout << "full_slot_count = " << full_slot_count << endl;
+
+		vector<int> sort_buffer (3);
+
+		for (int i = 0; i < 3; i++)
+		{
+			sort_buffer[i] = n.get_SSN(i);
+		}
+
+
+		if (full_slot_count < 3)
+		{
+			sort_buffer[2] = k;
+		}
+		sort (sort_buffer.begin(), sort_buffer.begin()+3);
+
+		for (int i = 1; i < 4; i++)
+		{
+			n.set_SSN(i, sort_buffer[i-1]);
+		}
+		
+		
+	}
+
+
+	
 
 } //end insert_record
 
