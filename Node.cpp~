@@ -17,7 +17,7 @@ Node::Node()
 	tp0 = 9999;
 	tp1 = 9999;
 	tp2 = 9999;
-	int n_type = 0;
+	int n_type = 1;
 	SSN1 = 999999999;
 	SSN2 = 999999999;
 	SSN3 = 999999999;
@@ -38,7 +38,7 @@ void Node::clear()
 	tp0 = 9999;
 	tp1 = 9999;
 	tp2 = 9999;
-	int n_type = 0;
+	int n_type = 1;
 	SSN1 = 999999999;
 	SSN2 = 999999999;
 	SSN3 = 999999999;
@@ -49,10 +49,10 @@ void Node::clear()
 }
 
 /*
-Function Name: 
-Description: 
-Arguments: 
-Returns: 
+Function Name: load_from_page
+Description: Loads page contents to an instance of a Node
+Arguments: pid, the page ID to load from; memspace, the memory space
+Returns: None
 */
 void Node::load_from_page(int pid, string memspace[2000][500])
 {
@@ -102,10 +102,10 @@ void Node::load_from_page(int pid, string memspace[2000][500])
 }
 
 /*
-Function Name: 
-Description: 
-Arguments: 
-Returns: 
+Function Name: write_to_page
+Description: Writes contents of a Node instance to a page
+Arguments: pid, the page ID to write to; memspace, the memory space
+Returns: None
 */
 void Node::write_to_page(int pid, string memspace[2000][500])
 {
@@ -370,8 +370,9 @@ void Node::set_sib_p(int value)
 //Operator overloading
 ostream &operator<<(ostream &out, Node a) 
 {
-        out << a.get_tp(0) << " " << a.get_tp(1) << " "
-		<< a.get_tp(2) << endl << a.get_SSN(1) << " "
+        out << a.get_n_type() << " " << endl << a.get_tp(0) << " " 
+		<< a.get_tp(1) << " " << a.get_tp(2) << endl 
+		<< a.get_SSN(1) << " "
 		<< a.get_SSN(2) << " " << a.get_SSN(3) << endl
 		<< a.get_rid(1) << " " << a.get_rid(2) << " "
 		<< a.get_rid(3) << endl << a.get_sib_p() << endl;

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <stdio.h>
+#include <string.h>
 #include "Tree.h"
 #include "Node.h"
 
@@ -14,9 +16,15 @@ using namespace std;
 //Main Program
 int main()
 {
+	char input1[8];
+	string op;
+	int key;
+	int rid;
+
 
 	string memspace[2000][500];
 	Tree tree = Tree();
+	/*
 	Node nodeA = Node();
 	Node nodeB = Node();
 	Node nodeC = Node();
@@ -66,8 +74,40 @@ int main()
 	cout <<"Start Insert Test\n";
 	tree.insert_record(20, 250, memspace);
 
+	nodeA.load_from_page(0, memspace);
+	nodeB.load_from_page(1, memspace);
+	nodeC.load_from_page(2, memspace);
 
+	cout << "nodeA: " << nodeA;
+	cout << "nodeB: " << nodeB;
+	cout << "nodeC: " << nodeC;
+	*/
+	cout << "$";
+	cin >> input1 >> key >> rid;
+	while(true)
+	{
+		cout << input1 << " " << key << " " << rid << endl;
+		
+		if (strcmp(input1, "Insert") == 0)
+		{
+			tree.insert_record(key, rid, memspace);
+		}
+		else if (strcmp(input1, "Search") == 0)
+		{
+			cout << tree.search(key, memspace) << endl;
+		}
+		else if (strcmp(input1, "Output") == 0)
+		{
+			break;
+		}
+		cout << "$";
+		cin >> input1 >> key >> rid;
 
+	}
+
+return 0;
 
 } //end main
+
+
 

@@ -76,6 +76,7 @@ int Tree::tree_search(int k, int pid, string memspace[2000][500])
 {
 	Node current_node = Node();
 	current_node.load_from_page(pid, memspace);
+	cout << "Search node: " << endl << current_node;
 
 	if (current_node.get_n_type() == 1)  //node is a leaf
 	{
@@ -133,75 +134,10 @@ Returns: None
 void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 {
 	
-	//stack<int> parents; /*Keeps track of parent node page IDs for 
-					  //recursive calls*/
-
-	/*
-
-	Node current_node = Node();
-
-	//Check for empty memory, write first record to first page if so
-	if (used.empty())
-	{
-		current_node.set_SSN(1, k);
-		current_node.set_rid(1, record_id);
-		current_node.write_to_page(root_pid, memspace);
-		used.push(root_pid);
-		free.pop();
-		return;
-	}
-	
-	//Load root node to memory	
-	current_node.load_from_page(root_pid, memspace);
-	used.push(root_pid);
-	free.pop();
-
-	
-	//Insertion algorithm
-	while (current_node.get_n_type() == 0)
-	{
-		int node_addr = current_node.get_addr();
-
-		parents.push(node_addr);
-		
-		int pointer_count = 0;
-		
-		for (int i = 0; i < 3; i++)
-		{
-			if (current_node.get_tp(i) != 9999)
-			{
-				pointer_count++;
-			}
-		}
-
-		if (k <= current_node.get_SSN(1))
-		{
-			node_addr = current_node.get_tp(0);
-			current_node.clear();
-			current_node.load_from_page(node_addr, memspace);
-		}
-		else if (k > current_node.get_SSN(1) 
-				&& current_node.get_SSN(2) != 9999)
-		{
-			node_addr = current_node.get_tp(1);
-			current_node.clear();
-			current_node.load_from_page(node_addr, memspace);
-		}
-		else if (k > current_node.get_SSN(2))
-		{
-			node_addr = current_node.get_tp(2);
-			current_node.clear();
-			current_node.load_from_page(node_addr, memspace);
-		}
-
-	} //end while
-	
-	*/
-
 	Node n = Node();
-	cout << "From in insert: " << k << endl;
+	//cout << "From in insert: " << k << endl;
 	int result = search(k, memspace);
-	cout << "Insert: " << result << endl;
+	//cout << "Insert: " << result << endl;
 
 	if (result == record_id)
 	{
@@ -210,15 +146,23 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 	
 	if (result == -1)
 	{
-		cout << "Insert result: " << n_pid << " " << result << " " 
-			<< parents.top() << endl;
-
+		//cout << "Insert result: " << n_pid << " " << result << " " 
+			//<< parents.top() << endl;
 		n.load_from_page(n_pid, memspace);
+
+		if (used.empty())
+		{
+			cout << "F1\n";
+			n.clear();
+			used.push(n_pid);
+			free.pop();
+		}
+		cout << n;
 
 		//Check if any SSN slots are free
 		int full_slot_count = 0;
 
-		for (int i = 1; i <= 3; i++)
+		for (int i = 1; i < 4; i++)
 		{
 			if (n.get_SSN(i) != 999999999)
 			{
@@ -228,30 +172,37 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 	
 		cout << "full_slot_count = " << full_slot_count << endl;
 
-		vector<int> sort_buffer (3);
-
-		for (int i = 0; i < 3; i++)
+		//Check for available slots and update page records
+		if (full_slot_count < 3) //record slots available on page
 		{
-			sort_buffer[i] = n.get_SSN(i);
-		}
-
-
-		if (full_slot_count < 3)
-		{
-			sort_buffer[2] = k;
-		}
-		sort (sort_buffer.begin(), sort_buffer.begin()+3);
-
-		for (int i = 1; i < 4; i++)
-		{
-			n.set_SSN(i, sort_buffer[i-1]);
+			if (k < n.get_SSN(1))
+			{
+				n.set_SSN(3, n.get_SSN(2));
+				n.set_rid(3, n.get_rid(2));
+				n.set_SSN(2, n.get_SSN(1));
+				n.set_rid(2, n.get_rid(1));
+				n.set_SSN(1, k);
+				n.set_rid(1, record_id);
+			}
+			else if (k > n.get_SSN(1) && k < n.get_SSN(2))
+			{
+				n.set_SSN(3, n.get_SSN(2));
+				n.set_rid(3, n.get_rid(2));
+				n.set_SSN(2, k);
+				n.set_rid(2, record_id);				
+			}
+			else if (k > n.get_SSN(2))
+			{
+				n.set_SSN(3, k);
+				n.set_rid(3, record_id);				
+			}
 		}
 		
+		cout << n;
+		//Update page	
+		n.write_to_page(n_pid, memspace);
 		
-	}
-
-
-	
+	}	
 
 } //end insert_record
 
