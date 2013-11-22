@@ -11,4 +11,4 @@ Node.o: Node.cpp
 	g++ -g -c Node.cpp
 
 clean:
-	rm -f main Tree Node *.o *.~
+	rm -f main Tree Node *~ *.o
