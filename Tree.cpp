@@ -62,7 +62,7 @@ Returns: The record ID associated with the search key as an integer
 */
 int Tree::search(int k, string memspace[2000][500])
 {
-	cout << "root_pid: " << root_pid << endl;
+	//cout << "root_pid: " << root_pid << endl;
 	return tree_search(k, root_pid, memspace);
 } //end search
 
@@ -77,35 +77,43 @@ int Tree::tree_search(int k, int pid, string memspace[2000][500])
 {
 	Node current_node = Node();
 	current_node.load_from_page(pid, memspace);
-	cout << "pid: " << pid << endl;
-	cout << "Search node: " << endl << current_node;
-	cout << "Page: ";
-	for (int i = 0; i < 40; i++)
-	{
-		cout << memspace[pid][i];
-	}
-	cout << endl;
+	//cout << "pid: " << pid << endl;
+	//cout << "Search node: " << endl << current_node;
+	//cout << "Page: ";
+	//for (int i = 0; i < 40; i++)
+	//{
+	//	cout << memspace[pid][i];
+	//}
+	//cout << endl;
 
 	if (current_node.get_n_type() == 1)  //node is a leaf
 	{
 		if (current_node.get_SSN(1) == k)
 		{
 			n_pid = pid;
+			cout << "n_pid: " << n_pid << endl;
+			cout << "current_node:" << current_node;
 			return current_node.get_rid(1);
 		}
 		else if (current_node.get_SSN(2) == k)
 		{
 			n_pid = pid;
+			cout << "n_pid: " << n_pid << endl;
+			cout << "current_node:" << current_node;
 			return current_node.get_rid(2);
 		}
 		else if (current_node.get_SSN(3) == k)
 		{
 			n_pid = pid;
+			cout << "n_pid: " << n_pid << endl;
+			cout << "current_node:" << current_node;
 			return current_node.get_rid(3);
 		}
 		else
 		{
 			n_pid = pid;
+			cout << "n_pid: " << n_pid << endl;
+			cout << "current_node:" << current_node;
 			return -1;
 		}
 	}
@@ -117,17 +125,23 @@ int Tree::tree_search(int k, int pid, string memspace[2000][500])
 		
 		if (k <= k0)
 		{
-			cout << "F3\n";
+			cout << "k <= k0";
+			cout << "n_pid: " << n_pid << endl;
+			cout << "current_node:" << current_node;
 			return tree_search(k, current_node.get_tp(0), memspace);
 		}
-		else if (k0 < k && k < k1)
+		else if (k0 < k && k <= k1)
 		{
-			cout << "F4\n";
+			cout << "k0 < k && k < k1";
+			cout << "n_pid: " << n_pid << endl;
+			cout << "current_node:" << current_node;
 			return tree_search(k, current_node.get_tp(1), memspace);
 		}
 		else
 		{
-			cout << "F5\n";
+			cout << "k > k1";
+			cout << "n_pid: " << n_pid << endl;
+			cout << "current_node:" << current_node;
 			return tree_search(k, current_node.get_tp(2), memspace);
 		}
 	}
@@ -159,12 +173,12 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 	
 	if (result == -1)
 	{
-		cout << "Insert result: " << n_pid << " " << result << endl;
+		//cout << "Insert result: " << n_pid << " " << result << endl;
 		n.load_from_page(n_pid, memspace);
 
 		if (used.empty())
 		{
-			cout << "F1\n";
+			//cout << "F1\n";
 			n.clear();
 			used.push(n_pid);
 			free.pop();
@@ -182,7 +196,7 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 			}
 		}
 	
-		cout << "full_slot_count = " << full_slot_count << endl;
+		//cout << "full_slot_count = " << full_slot_count << endl;
 
 		//Check for available slots and update page records
 		if (full_slot_count < 3) //record slots available on page
@@ -234,20 +248,54 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 				n.set_sib_p(free.front());
 
 				//Push to parent node
-				cout << "F1\n";
 				push_parent(n.get_SSN(2), n, memspace);
 			}
 			else if (k < n.get_SSN(2))
 			{
-				//TODO
+				ns.set_SSN(1, n.get_SSN(2));
+				ns.set_rid(1, n.get_rid(2));
+				ns.set_SSN(2, n.get_SSN(3));
+				ns.set_rid(2, n.get_rid(3));
+				ns.set_sib_p(n.get_sib_p());
+
+				n.set_SSN(3, 999999999);
+				n.set_rid(3, 999999);
+				n.set_SSN(2, k);
+				n.set_rid(2, record_id);
+				n.set_sib_p(free.front());
+
+				//Push to parent node
+				push_parent(n.get_SSN(2), n, memspace);
 			}
 			else if (k < n.get_SSN(3))
 			{
-				//TODO
+				ns.set_SSN(1, k);
+				ns.set_rid(1, record_id);
+				ns.set_SSN(2, n.get_SSN(3));
+				ns.set_rid(2, n.get_rid(3));
+				ns.set_sib_p(n.get_sib_p());
+
+				n.set_SSN(3, 999999999);
+				n.set_rid(3, 999999);
+				n.set_sib_p(free.front());
+
+				//Push to parent node
+				push_parent(n.get_SSN(2), n, memspace);
 			}
 			else  //k > SSN3
 			{
-				//TODO
+				ns.set_SSN(1, n.get_SSN(3));
+				ns.set_rid(1, n.get_rid(3));
+				ns.set_SSN(2, k);
+				ns.set_rid(2, record_id);
+				ns.set_sib_p(n.get_sib_p());
+
+				n.set_SSN(3, 999999999);
+				n.set_rid(3, 999999);
+				n.set_sib_p(free.front());
+
+				//Push to parent node
+				push_parent(n.get_SSN(2), n, memspace);
 			}
 			
 			cout << "Towards end of Insert: " << endl;
@@ -272,31 +320,27 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 
 
 /*
-Function Name: delete_record
-Description: Deletes a record from the database and updates the search index
-Arguments:  k, an integer that is the key value (SSN) to delete; 
-	memspace, the memory space used by the system
+Function Name: push_parent
+Description: Pushes the appropriate index key from the child node to the parent
+	node during a split
+Arguments:  k, an integer that is the key value (SSN) to push; 
+	n, the Node containing the key value; memspace, the memory space used by 
+	the system
 Returns: None
 */
 void Tree::push_parent(int k, Node n, string memspace[2000][500])
 {
 	Node p = Node(0);  //Create an internal node
-	cout << "F2\n";
+	//cout << "F2\n";
 	if (parents.empty()) //Tree empty except for leaf
 	{
-		cout << "F8\n";
+		//cout << "F8\n";
 		p.set_tp(0, n_pid);
 		p.set_tp(1, n.get_sib_p());
 		p.set_SSN(1, k);
 		free.pop();
-		cout << "p: " << p << "page id: " << free.front() << endl;
+		//cout << "p: " << p << "page id: " << free.front() << endl;
 		p.write_to_page(free.front(), memspace);
-		cout << "push_parent page: ";
-		for (int i = 0; i < 40; i++)
-		{
-			cout << memspace[free.front()][i];
-		}
-		cout << endl;
 		root_pid = free.front();
 		used.push(root_pid);
 	}
@@ -307,10 +351,11 @@ void Tree::push_parent(int k, Node n, string memspace[2000][500])
 
 		if (p.get_SSN(2) == 999999999)
 		{
-			cout << "F7\n";
+			//cout << "F7\n";
 			p.set_SSN(2, k);
 			p.set_tp(2, n.get_sib_p());
-			cout << "p: " << p << "page id: " << parents.top() << endl;
+			p.write_to_page(parents.top(), memspace);
+			//cout << "p: " << p << "page id: " << parents.top() << endl;
 		}
 		else  //Slots full
 		{
@@ -329,7 +374,7 @@ void Tree::push_parent(int k, Node n, string memspace[2000][500])
 			p.set_SSN(1, k);
 			p.set_tp(1, n.get_sib_p());
 
-			cout << "p: " << p << "ps: " << ps;
+			//cout << "p: " << p << "ps: " << ps;
 			
 			//Update page information and management queues
 			p.write_to_page(parents.top(), memspace);
