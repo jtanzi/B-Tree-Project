@@ -1,10 +1,13 @@
 /*
 Tree class header file
 */
+#ifndef TREE_H
+#define TREE_H
 
 #include <iostream>
 #include <queue>
 #include <stack>
+#include "Node.h"
 
 using namespace std;
 
@@ -31,7 +34,8 @@ class Tree
 		int search(int k, string memspace[2000][500]);
 		int tree_search(int k, int root_pid, string memspace[2000][500]);
 		void insert_record(int k, int record_id, string memspace[2000][500]);
-		void delete_record(int k, string memspace[2000][500]);
+		void push_parent(int k, Node n, string memspace[2000][500]);
+		void delete_record(int k, string memspace[2000][500]);		
 
 		//Page availability tracking
 		queue<int> free;
@@ -39,3 +43,4 @@ class Tree
 
 };
 
+#endif

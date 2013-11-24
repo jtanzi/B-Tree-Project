@@ -10,14 +10,29 @@ using namespace std;
 
 //Construction
 /*
-Node constructor
+Node constructors
 */
 Node::Node()
 {	
 	tp0 = 9999;
 	tp1 = 9999;
 	tp2 = 9999;
-	int n_type = 1;
+	n_type = 1;
+	SSN1 = 999999999;
+	SSN2 = 999999999;
+	SSN3 = 999999999;
+	rid1 = 999999;
+	rid2 = 999999;
+	rid3 = 999999;
+	sib_p = 9999;
+}
+
+Node::Node(int type)
+{
+	n_type = type;	
+	tp0 = 9999;
+	tp1 = 9999;
+	tp2 = 9999;
 	SSN1 = 999999999;
 	SSN2 = 999999999;
 	SSN3 = 999999999;
@@ -87,6 +102,7 @@ void Node::load_from_page(int pid, string memspace[2000][500])
 		tp1 = unpad_value(a[3]);
 		SSN2 = unpad_value(a[4]);
 		tp2 = unpad_value(a[5]);
+		sib_p = unpad_value(a[7]);
 	}
 	else  //Leaf node detected
 	{
