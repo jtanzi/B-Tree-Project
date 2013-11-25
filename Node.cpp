@@ -386,13 +386,20 @@ void Node::set_sib_p(int value)
 //Operator overloading
 ostream &operator<<(ostream &out, Node a) 
 {
-        out << a.get_n_type() << " " << endl << a.get_tp(0) << " " 
-		<< a.get_tp(1) << " " << a.get_tp(2) << endl 
-		<< a.get_SSN(1) << " "
-		<< a.get_SSN(2) << " " << a.get_SSN(3) << endl
-		<< a.get_rid(1) << " " << a.get_rid(2) << " "
-		<< a.get_rid(3) << endl << a.get_sib_p() << endl;
 
-        return out;
+	if (a.get_n_type() == 0)
+	{
+		out << a.get_tp(0) << " " << a.get_SSN(1) << " "
+			<< a.get_tp(1) << " " << a.get_SSN(2)  << " "
+			<< a.get_tp(2) << endl;
+	}
+	else
+	{
+		out << a.get_SSN(1) << " (" << a.get_rid(1) << ") "
+			<< a.get_SSN(2) << " (" << a.get_rid(2) << ") "
+			<< a.get_SSN(3) << " (" << a.get_rid(3) << ") " << endl;
+	}
+
+     return out;
 }
 

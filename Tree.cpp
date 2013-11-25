@@ -91,29 +91,21 @@ int Tree::tree_search(int k, int pid, string memspace[2000][500])
 		if (current_node.get_SSN(1) == k)
 		{
 			n_pid = pid;
-			cout << "n_pid: " << n_pid << endl;
-			cout << "current_node:" << current_node;
 			return current_node.get_rid(1);
 		}
 		else if (current_node.get_SSN(2) == k)
 		{
 			n_pid = pid;
-			cout << "n_pid: " << n_pid << endl;
-			cout << "current_node:" << current_node;
 			return current_node.get_rid(2);
 		}
 		else if (current_node.get_SSN(3) == k)
 		{
 			n_pid = pid;
-			cout << "n_pid: " << n_pid << endl;
-			cout << "current_node:" << current_node;
 			return current_node.get_rid(3);
 		}
 		else
 		{
 			n_pid = pid;
-			cout << "n_pid: " << n_pid << endl;
-			cout << "current_node:" << current_node;
 			return -1;
 		}
 	}
@@ -125,23 +117,14 @@ int Tree::tree_search(int k, int pid, string memspace[2000][500])
 		
 		if (k <= k0)
 		{
-			cout << "k <= k0";
-			cout << "n_pid: " << n_pid << endl;
-			cout << "current_node:" << current_node;
 			return tree_search(k, current_node.get_tp(0), memspace);
 		}
 		else if (k0 < k && k <= k1)
 		{
-			cout << "k0 < k && k < k1";
-			cout << "n_pid: " << n_pid << endl;
-			cout << "current_node:" << current_node;
 			return tree_search(k, current_node.get_tp(1), memspace);
 		}
 		else
 		{
-			cout << "k > k1";
-			cout << "n_pid: " << n_pid << endl;
-			cout << "current_node:" << current_node;
 			return tree_search(k, current_node.get_tp(2), memspace);
 		}
 	}
@@ -223,8 +206,8 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 				n.set_rid(3, record_id);				
 			}
 			
-			cout << "Towards end of Insert: " << endl;
-			cout << "n: " << n << endl;
+			//cout << "Towards end of Insert: " << endl;
+			//cout << "n: " << n << endl;
 			n.write_to_page(n_pid, memspace);
 		}
 		else  //Need to split
@@ -298,8 +281,8 @@ void Tree::insert_record(int k, int record_id, string memspace[2000][500])
 				push_parent(n.get_SSN(2), n, memspace);
 			}
 			
-			cout << "Towards end of Insert: " << endl;
-			cout << "n: " << n << endl << "ns: " << ns;
+			//cout << "Towards end of Insert: " << endl;
+			//cout << "n: " << n << endl << "ns: " << ns;
 	
 			//Update pages and page management queues
 			n.write_to_page(n_pid, memspace);
@@ -397,7 +380,176 @@ Arguments:  k, an integer that is the key value (SSN) to delete;
 	memspace, the memory space used by the system
 Returns: None
 */
-void delete_record(int k, string memspace[2000][500])
+void Tree::delete_record(int k, string memspace[2000][500])
 {
 
+	Node n = Node(1);
+	int result = search(k, memspace);
+
+	if (result == -1)  //Key not found
+	{
+		return;
+	}
+	else
+	{
+	
+	//Check if any SSN slots are free
+		int full_slot_count = 0;
+
+		for (int i = 1; i < 4; i++)
+		{
+			if (n.get_SSN(i) != 999999999)
+			{
+				full_slot_count = full_slot_count + 1;
+			}
+		}
+
+		//Check for available slots and update page records
+		if (full_slot_count > 2 || parents.empty())
+		{
+			if (k == n.get_SSN(1))
+			{
+				n.set_SSN(1, n.get_SSN(2));
+				n.set_rid(1, n.get_rid(2));
+				n.set_SSN(2, n.get_SSN(3));
+				n.set_rid(2, n.get_rid(3));
+				n.set_SSN(3, 999999999);
+				n.set_rid(3, 999999);
+			}
+			else if (k == n.get_SSN(2))
+			{
+				n.set_SSN(2, n.get_SSN(3));
+				n.set_rid(2, n.get_rid(3));
+				n.set_SSN(3, 999999999);
+				n.set_rid(3, 999999);
+			}
+			else if (k == n.get_SSN(3))
+			{
+				n.set_SSN(3, 999999999);
+				n.set_rid(3, 999999);				
+			}
+			
+			n.write_to_page(n_pid, memspace);
+		}
+		else  //Need to borrow from sibling or merge
+		{
+			Node p = Node(0);
+			p.load_from_page(parents.top(), memspace);
+
+			Node ns = Node(1);
+			ns.load_from_page(n.get_sib_p(), memspace);
+
+			if (ns.get_SSN(3) != 999999999) //Sibling has enough to borrow
+			{
+				if (k == n.get_SSN(1));
+				{
+					n.set_SSN(1, n.get_SSN(2));
+					n.set_rid(1, n.get_rid(2));
+				}
+
+				n.set_SSN(2, ns.get_SSN(1));
+				n.set_rid(2, ns.get_rid(1));
+				ns.set_SSN(1, ns.get_SSN(2));
+				ns.set_rid(1, ns.get_rid(2));
+				ns.set_SSN(2, ns.get_SSN(3));
+				ns.set_rid(2, ns.get_rid(3));
+				ns.set_SSN(3, 999999999);
+				ns.set_rid(3, 999999);
+		
+				n.write_to_page(n_pid, memspace);
+				ns.write_to_page(n.get_sib_p(), memspace);
+			}
+			else  //merge
+			{
+				ns.set_SSN(3, ns.get_SSN(2));
+				ns.set_rid(3, ns.get_rid(2));
+				ns.set_SSN(2, ns.get_SSN(1));
+				ns.set_rid(2, ns.get_rid(1));
+
+				if (k == n.get_SSN(1))
+				{
+					ns.set_SSN(1, n.get_SSN(1));
+					ns.set_rid(1, n.get_rid(1));
+				}
+				else
+				{
+					ns.set_SSN(1, n.get_SSN(2));
+					ns.set_rid(1, n.get_rid(2));				
+				}
+				n.clear();
+				n.write_to_page(n_pid, memspace);
+				ns.write_to_page(n.get_sib_p(), memspace);
+				
+				p.set_tp(1, p.get_tp(2));
+				p.set_SSN(2, 999999999);
+			
+				free.push(n_pid);
+				used.pop();
+				//n_pid = 0;						
+			}
+		}
+
+	}
+
+	//Clear parents stack for next insert or delete
+	while (!(parents.empty()))
+	{
+		parents.pop();
+	}
+	
 }//end delete_record
+
+/*
+Function Name: delete_push_parent
+Description: Pushes a key up to a parent node during merge
+Arguments:  k, an integer that is the key value (SSN) to push up; 
+	n, the Node the key is from; memspace, the memory space used by the system
+Returns: None
+*/
+void Tree::delete_push_parent(int k, Node n, string memspace[2000][500])
+{
+
+}//end delete_push_parent
+
+
+void Tree::output(string memspace[2000][500])
+{
+	Node n = Node(0);
+	n.load_from_page(root_pid, memspace);
+	
+	while (n.get_n_type() != 1)  //Output internals
+	{
+		if (n.get_sib_p() == 9999)
+		{
+			cout << n;
+			n.load_from_page(n.get_tp(0), memspace);
+		}
+		else
+		{
+			cout << n;
+			Node ns = Node(0);
+			int sib_p = n.get_sib_p();
+			while (sib_p != 9999)
+			{
+				ns.load_from_page(sib_p, memspace);
+				cout << ns;
+				sib_p = ns.get_sib_p();
+			}
+			n.load_from_page(n.get_tp(0), memspace);
+		}		
+		cout << n;
+	}
+		Node ns = Node(1);
+		int sib_p = n.get_sib_p();
+		do
+		{
+			ns.load_from_page(sib_p, memspace);
+			cout << ns;
+			sib_p = ns.get_sib_p();
+		} while (sib_p != 9999);
+
+		//cout << "sib_p:" << n.get_sib_p() << endl;
+	
+
+} //output end
+

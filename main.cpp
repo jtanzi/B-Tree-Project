@@ -34,25 +34,32 @@ int main()
 
 
 	cout << "$";
-	cin >> input1 >> key >> rid;
+	cin >> input1;
 	while(true)
 	{
-		cout << input1 << " " << key << " " << rid << endl;
+		//cout << input1 << " " << key << " " << rid << endl;
 		
 		if (strcmp(input1, "Insert") == 0)
-		{
+		{	
+			cin >> key >> rid;
 			tree.insert_record(key, rid, memspace);
 		}
 		else if (strcmp(input1, "Search") == 0)
 		{
+			cin >> key;
 			cout << tree.search(key, memspace) << endl;
+		}
+		else if (strcmp(input1, "Delete") == 0)
+		{
+			tree.delete_record(key, memspace);
 		}
 		else if (strcmp(input1, "Output") == 0)
 		{
+			tree.output(memspace);
 			break;
 		}
 		cout << "$";
-		cin >> input1 >> key >> rid;
+		cin >> input1;
 
 	}
 

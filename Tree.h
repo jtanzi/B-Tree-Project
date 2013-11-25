@@ -35,11 +35,15 @@ class Tree
 		int tree_search(int k, int root_pid, string memspace[2000][500]);
 		void insert_record(int k, int record_id, string memspace[2000][500]);
 		void push_parent(int k, Node n, string memspace[2000][500]);
-		void delete_record(int k, string memspace[2000][500]);		
+		void delete_record(int k, string memspace[2000][500]);	
+		void delete_push_parent(int k, Node n, string memspace[2000][500]);
+		void output(string memspace[2000][500]);	
 
 		//Page availability tracking
 		queue<int> free;
 		queue<int> used;
+
+		
 
 };
 
