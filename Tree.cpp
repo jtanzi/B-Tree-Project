@@ -385,9 +385,13 @@ void Tree::delete_record(int k, string memspace[2000][500])
 
 	Node n = Node(1);
 	int result = search(k, memspace);
+	n.load_from_page(n_pid, memspace);
+	cout << n;
+	cout << n.get_SSN(1) << " " << n.get_SSN(2) << " " << n.get_SSN(3) << endl;
 
 	if (result == -1)  //Key not found
 	{
+		cout << "Exit\n";
 		return;
 	}
 	else
@@ -398,17 +402,20 @@ void Tree::delete_record(int k, string memspace[2000][500])
 
 		for (int i = 1; i < 4; i++)
 		{
-			if (n.get_SSN(i) != 999999999)
+			if (n.get_SSN(i) < 999999999)
 			{
 				full_slot_count = full_slot_count + 1;
 			}
 		}
+
+		cout << "full_slot_count: " << full_slot_count << endl;
 
 		//Check for available slots and update page records
 		if (full_slot_count > 2 || parents.empty())
 		{
 			if (k == n.get_SSN(1))
 			{
+				cout << "F1\n";
 				n.set_SSN(1, n.get_SSN(2));
 				n.set_rid(1, n.get_rid(2));
 				n.set_SSN(2, n.get_SSN(3));
@@ -418,6 +425,7 @@ void Tree::delete_record(int k, string memspace[2000][500])
 			}
 			else if (k == n.get_SSN(2))
 			{
+				cout << "F2\n";
 				n.set_SSN(2, n.get_SSN(3));
 				n.set_rid(2, n.get_rid(3));
 				n.set_SSN(3, 999999999);
@@ -425,6 +433,7 @@ void Tree::delete_record(int k, string memspace[2000][500])
 			}
 			else if (k == n.get_SSN(3))
 			{
+				cout << "F3\n";
 				n.set_SSN(3, 999999999);
 				n.set_rid(3, 999999);				
 			}
@@ -443,6 +452,7 @@ void Tree::delete_record(int k, string memspace[2000][500])
 			{
 				if (k == n.get_SSN(1));
 				{
+					cout << "F4\n";
 					n.set_SSN(1, n.get_SSN(2));
 					n.set_rid(1, n.get_rid(2));
 				}
@@ -461,6 +471,7 @@ void Tree::delete_record(int k, string memspace[2000][500])
 			}
 			else  //merge
 			{
+				cout << "F5\n";
 				ns.set_SSN(3, ns.get_SSN(2));
 				ns.set_rid(3, ns.get_rid(2));
 				ns.set_SSN(2, ns.get_SSN(1));
@@ -468,11 +479,13 @@ void Tree::delete_record(int k, string memspace[2000][500])
 
 				if (k == n.get_SSN(1))
 				{
+					cout << "F6\n";
 					ns.set_SSN(1, n.get_SSN(1));
 					ns.set_rid(1, n.get_rid(1));
 				}
 				else
 				{
+					cout << "F7\n";
 					ns.set_SSN(1, n.get_SSN(2));
 					ns.set_rid(1, n.get_rid(2));				
 				}
@@ -490,7 +503,7 @@ void Tree::delete_record(int k, string memspace[2000][500])
 		}
 
 	}
-
+	cout << "F8\n";
 	//Clear parents stack for next insert or delete
 	while (!(parents.empty()))
 	{
@@ -537,19 +550,18 @@ void Tree::output(string memspace[2000][500])
 			}
 			n.load_from_page(n.get_tp(0), memspace);
 		}		
-		cout << n;
-	}
-		Node ns = Node(1);
-		int sib_p = n.get_sib_p();
-		do
-		{
-			ns.load_from_page(sib_p, memspace);
-			cout << ns;
-			sib_p = ns.get_sib_p();
-		} while (sib_p != 9999);
 
-		//cout << "sib_p:" << n.get_sib_p() << endl;
+	}
 	
+	cout << n;
+	Node ns = Node(1);
+	int sib_p = n.get_sib_p();
+	while (sib_p != 9999)
+	{
+		ns.load_from_page(sib_p, memspace);
+		cout << ns;
+		sib_p = ns.get_sib_p();
+	}
 
 } //output end
 

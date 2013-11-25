@@ -51,6 +51,7 @@ int main()
 		}
 		else if (strcmp(input1, "Delete") == 0)
 		{
+			cin >> key;
 			tree.delete_record(key, memspace);
 		}
 		else if (strcmp(input1, "Output") == 0)
