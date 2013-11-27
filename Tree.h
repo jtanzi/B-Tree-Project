@@ -36,7 +36,7 @@ class Tree
 		void insert_record(int k, int record_id, string memspace[2000][500]);
 		void push_parent(int k, Node n, string memspace[2000][500]);
 		void delete_record(int k, string memspace[2000][500]);	
-		void delete_push_parent(int k, Node n, string memspace[2000][500]);
+		void delete_parent(int k, Node n, string memspace[2000][500]);
 		void output(string memspace[2000][500]);	
 
 		//Page availability tracking

@@ -386,8 +386,8 @@ void Tree::delete_record(int k, string memspace[2000][500])
 	Node n = Node(1);
 	int result = search(k, memspace);
 	n.load_from_page(n_pid, memspace);
-	cout << n;
-	cout << n.get_SSN(1) << " " << n.get_SSN(2) << " " << n.get_SSN(3) << endl;
+	//cout << n;
+	//cout << n.get_SSN(1) << " " << n.get_SSN(2) << " " << n.get_SSN(3) << endl;
 
 	if (result == -1)  //Key not found
 	{
@@ -465,7 +465,18 @@ void Tree::delete_record(int k, string memspace[2000][500])
 				ns.set_rid(2, ns.get_rid(3));
 				ns.set_SSN(3, 999999999);
 				ns.set_rid(3, 999999);
-		
+				
+				//Swap borrowed value to parent node
+				if (n.get_SSN(2) >= p.get_SSN(2))
+				{
+					p.set_SSN(2, n.get_SSN(2));
+				}
+				else
+				{
+					p.set_SSN(1, n.get_SSN(2));
+				}
+
+				//Update page records
 				n.write_to_page(n_pid, memspace);
 				ns.write_to_page(n.get_sib_p(), memspace);
 			}
@@ -489,13 +500,13 @@ void Tree::delete_record(int k, string memspace[2000][500])
 					ns.set_SSN(1, n.get_SSN(2));
 					ns.set_rid(1, n.get_rid(2));				
 				}
+				
+				
 				n.clear();
 				n.write_to_page(n_pid, memspace);
 				ns.write_to_page(n.get_sib_p(), memspace);
 				
-				p.set_tp(1, p.get_tp(2));
-				p.set_SSN(2, 999999999);
-			
+				delete_parent(n.get_SSN(2), n, memspace);
 				free.push(n_pid);
 				used.pop();
 				//n_pid = 0;						
@@ -519,10 +530,39 @@ Arguments:  k, an integer that is the key value (SSN) to push up;
 	n, the Node the key is from; memspace, the memory space used by the system
 Returns: None
 */
-void Tree::delete_push_parent(int k, Node n, string memspace[2000][500])
+void Tree::delete_parent(int k, Node n, string memspace[2000][500])
 {
+	cout << "F9\n";
+	Node p = Node(0);
+	Node ps = Node(0);
 
-}//end delete_push_parent
+	p.load_from_page(parents.top(), memspace);
+	parents.pop();
+	
+	ps.load_from_page(p.get_sib_p(), memspace);
+
+	if (p.get_tp(2) != 999999999)  //Delete key2 in p
+	{
+		cout << "F10\n";
+		p.set_tp(1, p.get_tp(2));
+		p.set_tp(2, 9999);
+		p.set_SSN(2, 999999999);
+		p.set_SSN(1, n.get_SSN(3));
+	}
+	else if (ps.get_SSN(2) != 999999999)
+	{
+		if (parents.empty())
+		{
+			cout << "F11\n";
+			p.set_tp(1, p.get_tp(2));
+			p.set_SSN(1, n.get_SSN(3));
+			p.set_SSN(2, ps.get_SSN(1));
+			
+		}
+	}
+
+	
+}//end delete_parent
 
 
 void Tree::output(string memspace[2000][500])

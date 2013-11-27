@@ -37,7 +37,6 @@ int main()
 	cin >> input1;
 	while(true)
 	{
-		//cout << input1 << " " << key << " " << rid << endl;
 		
 		if (strcmp(input1, "Insert") == 0)
 		{	
