@@ -1,0 +1,31 @@
+Script started on Sun 01 Dec 2013 06:09:30 PM CST
+]0;jtanzi@localhost:~/Documents/git/eecs_hw5]7;file://localhost.localdomain/home/jtanzi/Documents/git/eecs_hw5[?1034h[jtanzi@localhost eecs_hw5]$ ./hw5
+$Insert 1 5
+$Insert 2 10
+$Insert 3 15
+$Insert 4 20
+$Insert 5 25
+$Insert 6 4 30
+$Insert 7 35
+$Search 1
+5
+$Search 2
+10
+$Search 3
+15
+$Search 4
+20
+$Search 4 5
+25
+$Search 6
+30
+$Search 7
+35
+$Delete 1
+full_slot_count: 2
+F5
+F6
+Segmentation fault (core dumped)
+]0;jtanzi@localhost:~/Documents/git/eecs_hw5]7;file://localhost.localdomain/home/jtanzi/Documents/git/eecs_hw5[jtanzi@localhost eecs_hw5]$ exit
+
+Script done on Sun 01 Dec 2013 06:14:53 PM CST

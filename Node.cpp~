@@ -125,12 +125,13 @@ Returns: None
 */
 void Node::write_to_page(int pid, string memspace[2000][500])
 {
+	//Parse and write to page according to node type
+
 	if (pid == 9999)  //Check for null pointer and exit early if found
 	{
 		return;
 	}
 
-	//Parse and write to page according to node type
 	if (n_type == 0) //Internal node format
 	{
 		memspace[pid][0] = pad_value(n_type, 1);

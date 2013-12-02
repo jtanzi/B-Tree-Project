@@ -57,7 +57,7 @@ int main()
 		{
 			tree.output(memspace);
 		}
-		else if ((strcmp(input1, "exit") == 0) || (strcmp(input1, "Exit") == 0))
+		else if ((strcmp(input1, "exit") == 0) || (strcmp(input1, "Exit") == 0)
 		{
 			break;
 		}
